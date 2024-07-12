@@ -1,0 +1,26 @@
+首先编写Shell脚本，比如命名为 clean_logs.sh：
+sh
+复制代码
+#!/bin/bash
+
+# 要清理的日志目录
+LOG_DIR="/path/to/your/log/directory"
+
+# 删除超过7天的.log文件
+find "$LOG_DIR" -name "*.log" -type f -mtime +7 -exec rm -f {} \;
+
+# 输出清理日志
+echo "$(date): Deleted old log files in $LOG_DIR" >> /var/log/clean_logs.log
+赋予脚本执行权限：
+sh
+复制代码
+chmod +x clean_logs.sh
+编辑crontab文件，添加定时任务。使用以下命令：
+sh
+复制代码
+crontab -e
+在crontab文件中添加一行，设置脚本每天凌晨2点执行：
+sh
+复制代码
+0 2 * * * /path/to/clean_logs.sh
+这里的0 2 * * *表示每天的凌晨2点执行这个脚本。可以根据需要调整执行的时间间隔。
